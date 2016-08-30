@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-navbar primary-darkest>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="login" padding>
+  <h1>Login</h1>
+  <form (ngSubmit)="login()">
+    <ion-list>
+      <ion-item>
+        <ion-label fixed>Email</ion-label>
+        <ion-input type="email" [(ngModel)]="email" name="email" required clearInput></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label fixed>Password</ion-label>
+        <ion-input type="password" [(ngModel)]="password" name="password" required clearInput></ion-input>s
+      </ion-item>
+    </ion-list>
+    <div padding>
+      <button block>Sign In</button>
+    </div>
+  </form>
+</ion-content>
