@@ -39,4 +39,21 @@ export class User {
     return !!this.admin;
   }
 
+  toJson() {
+    return JSON.stringify({
+      firstName: this.getFirstName(),
+      lastName: this.getLastName(),
+      username: this.getUsername(),
+      admin: this.isAdmin(),
+      team: this.getTeamId(),
+      id: this.getId()
+    });
+  }
+
+  static asUsers(users: any[]) {
+    return users.map((user: any) => {
+      return new User(user);
+    });
+  }
+
 }

@@ -26,4 +26,19 @@ export class Recognition {
   getType() {
     return this.type;
   }
+
+  toJson() {
+    return JSON.stringify({
+      fromUserId: this.getFromUserId(),
+      toUserId: this.getToUserId(),
+      type: this.getType(),
+      comment: this.getComment()
+    });
+  }
+
+  static asRecognitions(recognitions: any[]) {
+    return recognitions.map((recognition: any) => {
+      return new Recognition(recognition);
+    });
+  }
 }
