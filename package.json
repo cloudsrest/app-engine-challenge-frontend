@@ -33,6 +33,7 @@
     "karma-browserify": "^5.1.0",
     "karma-chrome-launcher": "^2.0.0",
     "karma-jasmine": "^1.0.2",
+    "phantomjs": "^2.1.7",
     "run-sequence": "1.1.5",
     "tsify": "^1.0.4",
     "tslint-ionic-rules": "0.0.4"
@@ -56,6 +57,9 @@
   "name": "medalist",
   "description": "medalist: An Ionic project",
   "scripts": {
-    "test": "karma start karma.conf.js"
+    "test": "./node_modules/.bin/karma start --single-run --browsers PhantomJS",
+    "test:dev": "./node_modules/.bin/karma start",
+    "prestart": "npm install",
+    "start": "ionic serve"
   }
 }
