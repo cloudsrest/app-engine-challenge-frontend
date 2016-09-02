@@ -9,9 +9,9 @@
   </ion-list-header>
   <ion-list>
     <div *ngFor="let item of recognitions">
-      <ion-item>
+      <ion-item text-wrap>
         <ion-avatar item-left>
-          <img src="https://api.adorable.io/avatars/90/abott@adorable.png">
+          <img src="https://api.adorable.io/avatars/face">
         </ion-avatar>
         <h2 *ngIf="item.getFromUser() && item.getToUser()">
           {{item.getFromUser().getFirstName()}} {{item.getFromUser().getLastName()}}
@@ -24,6 +24,13 @@
         <button clear>Comment</button>
       </ion-item>
       <ion-list class="comments-list">
+        <ion-item class="comment-item" text-wrap *ngFor="let n of [1, 2, 3, 4, 5]">
+          <ion-avatar item-left>
+            <img [src]="'https://api.adorable.io/avatars/face/eyes' + n + '/nose' + n + '/mouth' + n + '/f1f1f1'">
+          </ion-avatar>
+          <h4>Mike Judge</h4>
+          <p>blah blah blah</p>
+        </ion-item>
         <ion-item class="comment-item">
           <ion-avatar item-left>
             <img src="https://api.adorable.io/avatars/90/abott@adorable.png">
