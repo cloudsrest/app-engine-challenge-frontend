@@ -29,11 +29,23 @@ describe('Retrieve Users', () => {
         ));
     });
 
-    userProvider.all().subscribe((users: User[]) => {
+    userProvider.load().subscribe((users: User[]) => {
       expect(users.length).toEqual(3);
       expect(users[0].getId()).toEqual(1);
     });
+  }));
 
+  it('should return a user by id', inject([XHRBackend, UserProvider], (mockBackend, userProvider) => {
+    mockBackend.connections.subscribe((connection: MockConnection) => {
+      connection.mockRespond(
+        new Response(
+          new ResponseOptions({body: userData})
+        ));
+    });
+
+    userProvider.get(1).subscribe((user: User) => {
+      expect(user.getId()).toEqual(1);
+    });
   }));
 
 });

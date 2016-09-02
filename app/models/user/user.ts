@@ -15,39 +15,43 @@ export class User {
     this.username = data.username;
   }
 
-  getFirstName() {
+  getFirstName(): string {
     return this.firstName;
   }
 
-  getId() {
+  getId(): number {
     return this.id;
   }
 
-  getLastName() {
+  getLastName(): string {
     return this.lastName;
   }
 
-  getTeamId() {
+  getTeamId(): number {
     return this.team;
   }
 
-  getUsername() {
+  getUsername(): string {
     return this.username;
   }
 
-  isAdmin() {
+  isAdmin(): boolean {
     return !!this.admin;
   }
 
-  toJson() {
-    return JSON.stringify({
+  toJson(): string {
+    return JSON.stringify(this.asJson());
+  }
+
+  asJson(): any {
+    return {
       firstName: this.getFirstName(),
       lastName: this.getLastName(),
       username: this.getUsername(),
       admin: this.isAdmin(),
       team: this.getTeamId(),
       id: this.getId()
-    });
+    };
   }
 
   static asUsers(users: any[]) {

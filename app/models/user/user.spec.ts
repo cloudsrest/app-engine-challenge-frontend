@@ -44,6 +44,11 @@ describe('User', () => {
 
   it('should provide a method to convert the object to JSON', () => {
     let user = new User(data1);
+    expect(user.asJson()).toEqual(data1);
+  });
+
+  it('should provide a method to convert the object to a JSON string', () => {
+    let user = new User(data1);
     expect(JSON.parse(user.toJson())).toEqual(data1);
   });
 });

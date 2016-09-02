@@ -33,6 +33,11 @@ describe('Recognition', () => {
 
   it('should provide a method to convert the object to JSON', () => {
     let recognition = new Recognition(data1);
+    expect(recognition.asJson()).toEqual(data1);
+  });
+
+  it('should provide a method to convert the object to a JSON string', () => {
+    let recognition = new Recognition(data1);
     expect(JSON.parse(recognition.toJson())).toEqual(data1);
   });
 });

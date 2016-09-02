@@ -11,32 +11,36 @@ export class Recognition {
     this.comment = data.comment;
   }
 
-  getComment() {
+  getComment(): string {
     return this.comment;
   }
 
-  getFromUserId() {
+  getFromUserId(): number {
     return this.fromUserId;
   }
 
-  getToUserId() {
+  getToUserId(): number {
     return this.toUserId;
   }
 
-  getType() {
+  getType(): string {
     return this.type;
   }
 
-  toJson() {
-    return JSON.stringify({
-      fromUserId: this.getFromUserId(),
-      toUserId: this.getToUserId(),
-      type: this.getType(),
-      comment: this.getComment()
-    });
+  toJson(): string {
+    return JSON.stringify(this.asJson());
   }
 
-  static asRecognitions(recognitions: any[]) {
+  asJson(): any {
+    return {
+      fromUserId: this.getFromUserId(),
+        toUserId: this.getToUserId(),
+      type: this.getType(),
+      comment: this.getComment()
+    };
+  }
+
+  static asRecognitions(recognitions: any[]): Recognition[] {
     return recognitions.map((recognition: any) => {
       return new Recognition(recognition);
     });
