@@ -14,7 +14,8 @@ export class RecognitionProvider {
   }
 
   all(): Observable<any> {
-    return this.http.get(`${this.endpoint}/all`).map((res: Response) => {
+    // return this.http.get(`${this.endpoint}/all`).map((res: Response) => {
+    return this.http.get('data/recognition-data.json').map((res: Response) => { // TODO mock only
       return Recognition.asRecognitions(res.json());
     });
   }

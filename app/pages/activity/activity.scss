@@ -1,0 +1,9 @@
+.activity {
+  @media(min-width: $breakPointSm) {
+    width: 50%;
+    left: 25%;
+  }
+  .comment-item {
+    border-top: none !important;
+  }
+}

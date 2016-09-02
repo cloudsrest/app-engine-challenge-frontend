@@ -16,6 +16,7 @@ export class UserProvider {
   }
 
   all(): Observable<User[]> {
+    this.endpoint = 'data/user-data.json'; // TODO mock only
     return this.http.get(this.endpoint).map((res: Response) => {
       this.users = User.asUsers(res.json());
       return this.users;
@@ -31,6 +32,15 @@ export class UserProvider {
         observer.next(users[0]);
         observer.complete();
       });
+    });
+  }
+
+  currentUser(): Observable<User> {
+    // TODO replace with real call
+    // return this.http.get('/me').map((res: Response) => {
+    return this.http.get('data/user-data.json').map((res: Response) => {
+      // return null;
+      return new User(res.json()[0]);
     });
   }
 
