@@ -8,7 +8,7 @@ import {Recognition} from "../../models/recognition/recognition";
 export class RecognitionProvider {
 
   private endpoint: string = '/recognitions';
-  private requestOptions: RequestOptions;
+  private recognitions: Recognition[];
 
   constructor(private http:Http) {
   }
@@ -16,12 +16,14 @@ export class RecognitionProvider {
   all(): Observable<any> {
     // return this.http.get(`${this.endpoint}/all`).map((res: Response) => {
     return this.http.get('data/recognition-data.json').map((res: Response) => { // TODO mock only
-      return Recognition.asRecognitions(res.json());
+      this.recognitions = Recognition.asRecognitions(res.json());
+      return this.recognitions;
     });
   }
 
-  allByCurrentUser(): Observable<any> {
-    return this.http.get(`${this.endpoint}/mine`).map((res: Response) => {
+  allForCurrentUser(): Observable<any> {
+    // return this.http.get(`${this.endpoint}/mine`).map((res: Response) => {
+    return this.http.get('data/recognition-data-cu.json').map((res: Response) => { // TODO mock only
       return Recognition.asRecognitions(res.json());
     });
   }
@@ -30,5 +32,16 @@ export class RecognitionProvider {
     return this.http.post(this.endpoint, recognition.toJson()).map((res: Response) => {
       return new Recognition(res.json());
     });
+  }
+
+  load(): Observable<Recognition[]> {
+    if (this.recognitions) {
+      return Observable.create(observer => {
+        observer.next(this.recognitions);
+        observer.complete();
+      });
+    } else {
+      return this.all();
+    }
   }
 }

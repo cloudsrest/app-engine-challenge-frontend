@@ -48,6 +48,11 @@ export class Recognition {
     return this.fromUser;
   }
 
+  getCreatedAt(): Date {
+    // TODO return the actual recognition timestamp
+    return new Date();
+  }
+
   setFromUser(user: User) {
     this.fromUser = user;
   }

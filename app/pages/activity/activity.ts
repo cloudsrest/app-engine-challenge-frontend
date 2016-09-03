@@ -5,16 +5,24 @@ import {Recognition} from "../../models/recognition/recognition";
 import {UserProvider} from "../../providers/user/user-provider";
 import {User} from "../../models/user/user";
 import {LoginPage} from "../login/login";
+import {TimeAgoPipe} from "angular2-moment";
 
 @Component({
-  templateUrl: 'build/pages/activity/activity.html'
+  templateUrl: 'build/pages/activity/activity.html',
+  pipes: [TimeAgoPipe]
 })
 export class ActivityPage {
 
+  static ACTIVITY: any = {
+    recent: 'recent',
+    notifications: 'notifications'
+  };
   recognitions: Recognition[];
+  currentView: string;
 
   constructor(private navCtrl: NavController, private recData: RecognitionProvider, private userData: UserProvider) {
     this.recognitions = [];
+    this.currentView = ActivityPage.ACTIVITY.recent;
   }
 
   onPageWillEnter() {
@@ -23,11 +31,31 @@ export class ActivityPage {
         // there is no user logged in -- navigate to login page to avoid 401 and a blank page
         this.navCtrl.setRoot(LoginPage);
       } else {
-        this.recData.all().subscribe((recognitions: Recognition[]) => {
-          this.recognitions = this.mapUsersToRecognitions(recognitions);
-        });
+        this.loadAllRecognitions();
       }
     });
+  }
+
+  loadAllRecognitions() {
+    this.recData.load().subscribe((recognitions: Recognition[]) => {
+      this.recognitions = this.mapUsersToRecognitions(recognitions);
+    });
+  }
+
+  loadRecognitionsForCurrentUser() {
+    this.recData.allForCurrentUser().subscribe((recognitions: Recognition[]) => {
+      this.recognitions = this.mapUsersToRecognitions(recognitions);
+    });
+  }
+
+  showRecentActivity() {
+    this.currentView = ActivityPage.ACTIVITY.recent;
+    this.loadAllRecognitions();
+  }
+
+  showNotifications() {
+    this.currentView = ActivityPage.ACTIVITY.notifications;
+    this.loadRecognitionsForCurrentUser();
   }
 
   private mapUsersToRecognitions(recognitions) {
