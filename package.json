@@ -64,7 +64,7 @@
     "test": "./node_modules/.bin/karma start --single-run --browsers PhantomJS",
     "test:dev": "./node_modules/.bin/karma start",
     "prestart": "npm install",
-    "start": "ionic serve"
+    "start": "node server.js"
   },
   "engines": {
     "npm": "~3.10.7"

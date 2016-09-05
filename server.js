@@ -13,6 +13,7 @@ var _url = require('url');
 
 var _app = _express();
 
+var _apiUrl = 'https://blissful-cell-141318.appspot.com/';
 var _serveDir = '/www';
 var _server;
 var _port;
@@ -32,7 +33,7 @@ bootstrap();
 _app.use('/build', _express.static(__dirname + _serveDir + '/build'));
 
 // proxy api requests
-// _app.use(apiProxy());
+_app.use(apiProxy());
 
 // all other requests return index.html
 _app.all('/*', sendIndex);
@@ -41,15 +42,13 @@ function apiProxy() {
   return proxyRequest;
 
   function proxyRequest(req, res, next) {
-    var url = _url.parse(req.url), version, path, target;
+    var url = _url.parse(req.url), path, target;
 
     if (shouldProxyRequest(url.path)) {
-      version = '/' + API_VERSION + '/';
       path = getPath(url.path);
-      target = _client.apiUrl() + version + path;
+      target = _apiUrl + path;
 
       _proxy.web(req, res, {target: target});
-
     } else {
       next();
     }
