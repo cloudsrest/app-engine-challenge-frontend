@@ -7,23 +7,21 @@ import {Recognition} from "../../models/recognition/recognition";
 @Injectable()
 export class RecognitionProvider {
 
-  private endpoint: string = '/recognitions';
+  private endpoint: string = '/api/recognitions';
   private recognitions: Recognition[];
 
   constructor(private http:Http) {
   }
 
   all(): Observable<any> {
-    // return this.http.get(`${this.endpoint}/all`).map((res: Response) => {
-    return this.http.get('data/recognition-data.json').map((res: Response) => { // TODO mock only
+    return this.http.get(`${this.endpoint}/all`).map((res: Response) => {
       this.recognitions = Recognition.asRecognitions(res.json());
       return this.recognitions;
     });
   }
 
   allForCurrentUser(): Observable<any> {
-    // return this.http.get(`${this.endpoint}/mine`).map((res: Response) => {
-    return this.http.get('data/recognition-data-cu.json').map((res: Response) => { // TODO mock only
+    return this.http.get(`${this.endpoint}/mine`).map((res: Response) => {
       return Recognition.asRecognitions(res.json());
     });
   }
