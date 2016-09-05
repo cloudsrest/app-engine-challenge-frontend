@@ -12,8 +12,8 @@ export class Recognition {
     this.toUserId = data.toUserId;
     this.type = data.type;
     this.comment = data.comment;
-    this.toUser = data.toUser;
-    this.fromUser = data.fromUser;
+    this.toUser = data.toUser || null;
+    this.fromUser = data.fromUser || null;
   }
 
   getComment(): string {
@@ -60,7 +60,7 @@ export class Recognition {
   asJson(): any {
     return {
       fromUserId: this.getFromUserId(),
-        toUserId: this.getToUserId(),
+      toUserId: this.getToUserId(),
       type: this.getType(),
       comment: this.getComment()
     };

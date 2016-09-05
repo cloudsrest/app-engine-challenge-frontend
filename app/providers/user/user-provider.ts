@@ -34,8 +34,8 @@ export class UserProvider {
   }
 
   currentUser(): Observable<User> {
-    return this.http.get('/me').map((res: Response) => {
-      return new User(res.json()[0]);
+    return this.http.get(`${this.endpoint}/me`).map((res: Response) => {
+      return new User(res.json());
     });
   }
 

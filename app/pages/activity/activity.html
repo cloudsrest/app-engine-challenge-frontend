@@ -1,9 +1,14 @@
 <ion-header>
-  <ion-navbar primary-darkest>
-  </ion-navbar>
+  <ion-toolbar primary-darkest>
+    <ion-buttons end>
+      <button (click)="openRecognitionCreate()">
+        <ion-icon name="person-add"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
 </ion-header>
 
-<ion-content class="activity">
+<ion-content class="activity" padding>
   <ion-segment [(ngModel)]="currentView" primary>
     <ion-segment-button value="recent" (ionSelect)="showRecentActivity()">
       Recent Activity
