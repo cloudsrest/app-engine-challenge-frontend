@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {NavController, LoadingController} from 'ionic-angular';
+import {ActivityPage} from "../activity/activity";
 
 @Component({
   templateUrl: 'build/pages/login/login.html'
@@ -13,6 +14,7 @@ export class LoginPage {
 
   public login() {
     this.presentLoading();
+    this.navCtrl.push(ActivityPage);
     // TODO call back end to send login request
     // TODO navigate to dashboard page
   }

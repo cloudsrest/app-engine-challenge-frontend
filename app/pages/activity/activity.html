@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-navbar primary-darkest>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="activity">
+  <ion-segment [(ngModel)]="currentView" primary>
+    <ion-segment-button value="recent" (ionSelect)="showRecentActivity()">
+      Recent Activity
+    </ion-segment-button>
+    <ion-segment-button value="notifications" (ionSelect)="showNotifications()">
+      Notifications
+    </ion-segment-button>
+  </ion-segment>
+  <ion-list>
+    <div *ngFor="let item of recognitions">
+      <ion-item text-wrap>
+        <ion-avatar item-left>
+          <img src="https://api.adorable.io/avatars/face">
+        </ion-avatar>
+        <h2 *ngIf="item.getFromUser() && item.getToUser()">
+          {{item.getFromUser().getFirstName()}} {{item.getFromUser().getLastName()}}
+          gave
+          {{item.getToUser().getFirstName()}} {{item.getToUser().getLastName()}}
+          recognition
+          <span *ngIf="item.getType()">for #{{item.getType().toLowerCase()}}</span>
+        </h2>
+        <p>"{{item.getComment()}}"</p>
+        <small>{{item.getCreatedAt() | amTimeAgo}}</small>
+      </ion-item>
+      <!-- removing comments list, leaving example impl -->
+      <!--<ion-list class="comments-list">-->
+        <!--<ion-item class="comment-item" text-wrap *ngFor="let n of [1, 2, 3, 4, 5]">-->
+          <!--<ion-avatar item-left>-->
+            <!--<img [src]="'https://api.adorable.io/avatars/face/eyes' + n + '/nose' + n + '/mouth' + n + '/f1f1f1'">-->
+          <!--</ion-avatar>-->
+          <!--<h4>Mike Judge</h4>-->
+          <!--<p>blah blah blah</p>-->
+        <!--</ion-item>-->
+        <!--<ion-item class="comment-item">-->
+          <!--<ion-avatar item-left>-->
+            <!--<img src="https://api.adorable.io/avatars/90/abott@adorable.png">-->
+          <!--</ion-avatar>-->
+          <!--<ion-input placeholder="Write a comment..."></ion-input>-->
+        <!--</ion-item>-->
+      <!--</ion-list>-->
+    </div>
+  </ion-list>
+</ion-content>

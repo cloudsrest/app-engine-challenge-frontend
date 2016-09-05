@@ -7,8 +7,7 @@ import 'rxjs/Rx';
 @Injectable()
 export class UserProvider {
 
-  private endpoint: string = '/users';
-  private requestOptions: RequestOptions;
+  private endpoint: string = 'api/users';
   private users: User[];
 
   constructor(private http:Http) {
@@ -31,6 +30,12 @@ export class UserProvider {
         observer.next(users[0]);
         observer.complete();
       });
+    });
+  }
+
+  currentUser(): Observable<User> {
+    return this.http.get('/me').map((res: Response) => {
+      return new User(res.json()[0]);
     });
   }
 

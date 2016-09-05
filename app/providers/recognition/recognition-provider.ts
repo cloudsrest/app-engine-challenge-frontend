@@ -7,19 +7,20 @@ import {Recognition} from "../../models/recognition/recognition";
 @Injectable()
 export class RecognitionProvider {
 
-  private endpoint: string = '/recognitions';
-  private requestOptions: RequestOptions;
+  private endpoint: string = '/api/recognitions';
+  private recognitions: Recognition[];
 
   constructor(private http:Http) {
   }
 
   all(): Observable<any> {
     return this.http.get(`${this.endpoint}/all`).map((res: Response) => {
-      return Recognition.asRecognitions(res.json());
+      this.recognitions = Recognition.asRecognitions(res.json());
+      return this.recognitions;
     });
   }
 
-  allByCurrentUser(): Observable<any> {
+  allForCurrentUser(): Observable<any> {
     return this.http.get(`${this.endpoint}/mine`).map((res: Response) => {
       return Recognition.asRecognitions(res.json());
     });
@@ -29,5 +30,16 @@ export class RecognitionProvider {
     return this.http.post(this.endpoint, recognition.toJson()).map((res: Response) => {
       return new Recognition(res.json());
     });
+  }
+
+  load(): Observable<Recognition[]> {
+    if (this.recognitions) {
+      return Observable.create(observer => {
+        observer.next(this.recognitions);
+        observer.complete();
+      });
+    } else {
+      return this.all();
+    }
   }
 }
