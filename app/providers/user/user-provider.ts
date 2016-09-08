@@ -8,19 +8,30 @@ import {Storage, LocalStorage} from "ionic-angular";
 @Injectable()
 export class UserProvider {
 
-  private endpoint: string = 'api/users';
+  private endpoint: string = '/api/users';
   private users: User[];
   private storage: Storage;
+  private accessToken: string;
 
   constructor(private http:Http) {
     this.storage = new Storage(LocalStorage);
-    this.load();
+    this.getAccessToken().then(() => {
+      this.load();
+    }).catch(() => {});
   }
 
   all(): Observable<User[]> {
-    return this.http.get(this.endpoint, {headers: this.getHeaders()}).map((res: Response) => {
-      this.users = User.asUsers(res.json());
-      return this.users;
+    return Observable.create(observer => {
+      this.getAccessToken().then(() => {
+        this.http.get(this.endpoint, {headers: this.getHeaders()}).subscribe((res: Response) => {
+          this.users = User.asUsers(res.json());
+          observer.next(this.users);
+          observer.complete();
+        });
+      }).catch(() => {
+        observer.error();
+        observer.complete();
+      });
     });
   }
 
@@ -37,8 +48,23 @@ export class UserProvider {
   }
 
   currentUser(): Observable<User> {
-    return this.http.get('/me', {headers: this.getHeaders()}).map((res: Response) => {
-      return new User(res.json());
+    return Observable.create(observer => {
+      this.getAccessToken().then(() => {
+        this.http.get('/api/users/me', {headers: this.getHeaders()}).subscribe((res: Response) => {
+          observer.next(new User(res.json()));
+          observer.complete();
+        }, (err) => {
+          if (err.status === 401) {
+            // try to reauth with refresh token
+          } else {
+            observer.error(err);
+            observer.complete();
+          }
+        });
+      }).catch(() => {
+        observer.error();
+        observer.complete();
+      });
     });
   }
 
@@ -53,10 +79,23 @@ export class UserProvider {
     }
   }
 
-  private getHeaders() {
+  private getAccessToken(): Promise<string> {
+    return new Promise((resolve, reject) => {
+      this.storage.get('access_token').then((accessToken: string) => {
+        if (accessToken) {
+          this.accessToken = accessToken;
+          resolve(accessToken);
+        } else {
+          reject();
+        }
+      });
+    });
+  }
+
+  private getHeaders(): Headers {
     let headers = new Headers();
-    let accessToken = this.storage.get('access_token');
-    headers.append('Authorization', `Basic ${accessToken}`);
+    headers.append('Authorization', `Bearer ${this.accessToken}`);
+    headers.append('Content-Type', 'application/json');
     return headers;
   }
 }

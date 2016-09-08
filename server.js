@@ -13,7 +13,7 @@ var _url = require('url');
 
 var _app = _express();
 
-var _apiUrl = 'https://blissful-cell-141318.appspot.com/';
+var _apiUrl = 'https://blissful-cell-141318.appspot.com/api/';
 var _serveDir = '/www';
 var _server;
 var _port;
@@ -46,12 +46,22 @@ function apiProxy() {
 
     if (shouldProxyRequest(url.path)) {
       path = getPath(url.path);
-      target = _apiUrl + path;
+      target = _apiUrl;
+
+      if (!isOauthRequest(path)) {
+        target += '/secure/';
+      }
+      target += path;
 
       _proxy.web(req, res, {target: target});
     } else {
       next();
     }
+  }
+
+  function isOauthRequest(path) {
+    console.log(path);
+    return path.toString().indexOf('oauth/token') > -1;
   }
 
   function getPath(path) {
