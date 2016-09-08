@@ -38,7 +38,7 @@ export class UserProvider {
 
   currentUser(): Observable<User> {
     return this.http.get('/me', {headers: this.getHeaders()}).map((res: Response) => {
-      return new User(res.json()[0]);
+      return new User(res.json());
     });
   }
 

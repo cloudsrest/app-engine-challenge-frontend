@@ -6,6 +6,7 @@ import {UserProvider} from "../../providers/user/user-provider";
 import {User} from "../../models/user/user";
 import {LoginPage} from "../login/login";
 import {TimeAgoPipe} from "angular2-moment";
+import {RecognitionCreateModal} from "../recognition-create-modal/recognition-create-modal";
 
 @Component({
   templateUrl: 'build/pages/activity/activity.html',
@@ -20,7 +21,7 @@ export class ActivityPage {
   recognitions: Recognition[];
   currentView: string;
 
-  constructor(private navCtrl: NavController, private recData: RecognitionProvider, private userData: UserProvider) {
+  constructor(private navCtrl: NavController, private recData: RecognitionProvider, private userData: UserProvider, private modalCtrl: ModalController) {
     this.recognitions = [];
     this.currentView = ActivityPage.ACTIVITY.recent;
   }
@@ -35,8 +36,18 @@ export class ActivityPage {
     });
   }
 
-  loadAllRecognitions() {
-    this.recData.load().subscribe((recognitions: Recognition[]) => {
+  openRecognitionCreate() {
+    let modal = this.modalCtrl.create(RecognitionCreateModal);
+    modal.onDidDismiss((data?:any) => {
+      if (data) {
+        this.loadAllRecognitions(true);
+      }
+    });
+    modal.present();
+  }
+
+  loadAllRecognitions(reload?: boolean) {
+    this.recData.load(reload).subscribe((recognitions: Recognition[]) => {
       this.recognitions = this.mapUsersToRecognitions(recognitions);
     });
   }
