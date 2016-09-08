@@ -27,7 +27,7 @@ export class ActivityPage {
   }
 
   onPageWillEnter() {
-    this.userData.currentUser().subscribe(() => {
+    this.userData.currentUser().subscribe((res) => {
       // current user is logged in
       this.loadAllRecognitions();
     }, () => {
