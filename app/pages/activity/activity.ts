@@ -26,13 +26,12 @@ export class ActivityPage {
   }
 
   onPageWillEnter() {
-    this.userData.currentUser().subscribe((currentUser: User) => {
-      if (!currentUser) {
-        // there is no user logged in -- navigate to login page to avoid 401 and a blank page
-        this.navCtrl.setRoot(LoginPage);
-      } else {
-        this.loadAllRecognitions();
-      }
+    this.userData.currentUser().subscribe(() => {
+      // current user is logged in
+      this.loadAllRecognitions();
+    }, () => {
+      // revert to login page
+      this.navCtrl.setRoot(LoginPage);
     });
   }
 

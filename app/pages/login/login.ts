@@ -1,22 +1,34 @@
 import {Component} from '@angular/core';
-import {NavController, LoadingController} from 'ionic-angular';
+import {NavController, LoadingController, Storage, LocalStorage} from 'ionic-angular';
 import {ActivityPage} from "../activity/activity";
+import {Http, Response} from "@angular/http";
 
 @Component({
   templateUrl: 'build/pages/login/login.html'
 })
 export class LoginPage {
-  email: string = '';
+  username: string = '';
   password: string = '';
+  loginUrl: string = '/api/oauth/token';
+  private storage: Storage;
 
-  constructor(private navCtrl: NavController, private loadingCtrl: LoadingController) {
+  constructor(private navCtrl: NavController, private loadingCtrl: LoadingController, private http: Http) {
+    this.storage = new Storage(LocalStorage);
   }
 
   public login() {
-    this.presentLoading();
-    this.navCtrl.push(ActivityPage);
-    // TODO call back end to send login request
-    // TODO navigate to dashboard page
+    if (this.loginIsValid()) {
+      this.presentLoading();
+      this.http.post(this.loginUrl, JSON.stringify({
+        username: this.username,
+        password: this.password,
+        grant_type: 'password'
+      })).subscribe((res: Response) => {
+        let accessToken = res.json().access_token;
+        this.storage.set('access_token', accessToken);
+        this.navCtrl.setRoot(ActivityPage);
+      });
+    }
   }
 
   presentLoading() {
@@ -28,6 +40,6 @@ export class LoginPage {
   }
 
   private loginIsValid() {
-    return this.email && this.password;
+    return this.username && this.password;
   }
 }

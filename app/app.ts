@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {ionicBootstrap, Platform} from 'ionic-angular';
+import {ionicBootstrap, Platform, LocalStorage} from 'ionic-angular';
 import {StatusBar} from 'ionic-native';
 import {RecognitionProvider} from "./providers/recognition/recognition-provider";
 import {UserProvider} from "./providers/user/user-provider";
@@ -7,7 +7,7 @@ import {ActivityPage} from "./pages/activity/activity";
 
 @Component({
   template: '<ion-nav [root]="rootPage"></ion-nav>',
-  providers: [UserProvider, RecognitionProvider]
+  providers: [UserProvider, RecognitionProvider, LocalStorage]
 })
 export class MyApp {
   rootPage: any = ActivityPage;
