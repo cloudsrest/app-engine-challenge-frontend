@@ -7,7 +7,7 @@ import {ActivityPage} from "./pages/activity/activity";
 
 @Component({
   template: '<ion-nav [root]="rootPage"></ion-nav>',
-  providers: [UserProvider, RecognitionProvider, LocalStorage]
+  providers: [UserProvider, RecognitionProvider]
 })
 export class MyApp {
   rootPage: any = ActivityPage;
