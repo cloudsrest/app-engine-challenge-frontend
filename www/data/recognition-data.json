@@ -1,0 +1,4 @@
+[
+  {"fromUserId": 1, "toUserId": 2, "type": null, "comment": "Love what you did on the Dodge project!"},
+  {"fromUserId": 2, "toUserId": 1, "type": "INNOVATION", "comment": "Good idea to use Spring Boot"}
+]

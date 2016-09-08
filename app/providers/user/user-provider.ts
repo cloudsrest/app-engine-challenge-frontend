@@ -1,22 +1,24 @@
 import {Injectable} from '@angular/core';
-import {Http, RequestOptions, Headers, Response} from "@angular/http";
+import {Http, Headers, Response} from "@angular/http";
 import {User} from "../../models/user/user";
 import {Observable} from "rxjs";
 import 'rxjs/Rx';
+import {Storage, LocalStorage} from "ionic-angular";
 
 @Injectable()
 export class UserProvider {
 
-  private endpoint: string = '/users';
-  private requestOptions: RequestOptions;
+  private endpoint: string = 'api/users';
   private users: User[];
+  private storage: Storage;
 
   constructor(private http:Http) {
+    this.storage = new Storage(LocalStorage);
     this.load();
   }
 
   all(): Observable<User[]> {
-    return this.http.get(this.endpoint).map((res: Response) => {
+    return this.http.get(this.endpoint, {headers: this.getHeaders()}).map((res: Response) => {
       this.users = User.asUsers(res.json());
       return this.users;
     });
@@ -34,6 +36,12 @@ export class UserProvider {
     });
   }
 
+  currentUser(): Observable<User> {
+    return this.http.get('/me', {headers: this.getHeaders()}).map((res: Response) => {
+      return new User(res.json());
+    });
+  }
+
   load(): Observable<User[]> {
     if (this.users) {
       return Observable.create(observer => {
@@ -43,5 +51,12 @@ export class UserProvider {
     } else {
       return this.all();
     }
+  }
+
+  private getHeaders() {
+    let headers = new Headers();
+    let accessToken = this.storage.get('access_token');
+    headers.append('Authorization', `Basic ${accessToken}`);
+    return headers;
   }
 }

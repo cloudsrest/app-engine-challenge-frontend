@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons start>
+      <button (click)="dismiss()">
+        Cancel
+      </button>
+    </ion-buttons>
+    <ion-title>Give Recognition</ion-title>
+    <ion-buttons end>
+      <button (click)="save()" primary [disabled]="!recognitionUser || !recognitionType">
+        Save
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list radio-group [(ngModel)]="recognitionUser">
+    <ion-list-header>
+      Select a colleague
+    </ion-list-header>
+    <ion-item *ngFor="let user of users">
+      <ion-label>{{user.getFirstName()}}</ion-label>
+      <ion-radio [value]="user.getId()"></ion-radio>
+    </ion-item>
+  </ion-list>
+  <ion-list radio-group [(ngModel)]="recognitionType">
+    <ion-list-header>
+      Select type of recognition
+    </ion-list-header>
+    <ion-item *ngFor="let type of recognitionTypes">
+      <ion-label>{{type}}</ion-label>
+      <ion-radio [value]="type"></ion-radio>
+    </ion-item>
+  </ion-list>
+  <ion-list>
+    <ion-list-header>
+      Provide feedback (optional)
+    </ion-list-header>
+    <ion-item>
+      <ion-input placeholder="Write a comment..." [(ngModel)]="recognitionComment"></ion-input>
+    </ion-item>
+  </ion-list>
+</ion-content>

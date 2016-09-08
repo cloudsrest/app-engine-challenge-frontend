@@ -28,7 +28,7 @@ describe('Retrieve Recognitions', () => {
         ));
     });
 
-    recProvider.all().subscribe((recognitions: Recognition[]) => {
+    recProvider.load().subscribe((recognitions: Recognition[]) => {
       expect(recognitions.length).toEqual(2);
       expect(recognitions[0].getToUserId()).toEqual(2);
     });
@@ -98,7 +98,7 @@ describe('Get the current users Recognitions', () => {
             ));
         });
 
-        recProvider.all().subscribe((recognitions: Recognition[]) => {
+        recProvider.allForCurrentUser().subscribe((recognitions: Recognition[]) => {
           expect(recognitions.length).toEqual(2);
           expect(recognitions[0].getToUserId()).toEqual(1);
         });
