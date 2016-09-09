@@ -15,7 +15,7 @@ export class RecognitionProvider {
     'HARD_WORK'
   ];
 
-  private endpoint: string = '/api/recognitions';
+  private endpoint: string = '/api/secure/recognitions';
   private recognitions: Recognition[];
   private storage: Storage;
   private accessToken: string;
@@ -31,6 +31,9 @@ export class RecognitionProvider {
           this.recognitions = Recognition.asRecognitions(res.json());
           observer.next(this.recognitions);
           observer.complete();
+        }, (err) => {
+          observer.error(err);
+          observer.complete();
         });
       }).catch(() => {
         observer.error();
@@ -44,6 +47,9 @@ export class RecognitionProvider {
       this.getAccessToken().then(() => {
         this.http.get(`${this.endpoint}/mine`, {headers: this.getHeaders()}).subscribe((res: Response) => {
           observer.next(Recognition.asRecognitions(res.json()));
+          observer.complete();
+        }, (err) => {
+          observer.error(err);
           observer.complete();
         });
       }).catch(() => {

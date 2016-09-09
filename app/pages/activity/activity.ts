@@ -7,6 +7,7 @@ import {User} from "../../models/user/user";
 import {LoginPage} from "../login/login";
 import {TimeAgoPipe} from "angular2-moment";
 import {RecognitionCreateModal} from "../recognition-create-modal/recognition-create-modal";
+import {Response} from "@angular/http";
 
 @Component({
   templateUrl: 'build/pages/activity/activity.html',
@@ -27,13 +28,19 @@ export class ActivityPage {
   }
 
   onPageWillEnter() {
-    this.userData.currentUser().subscribe((res) => {
+    this.userData.currentUser().subscribe(() => {
       // current user is logged in
       this.loadAllRecognitions();
-    }, () => {
+    }, (res) => {
       // revert to login page
-      this.navCtrl.setRoot(LoginPage);
+      this.errorHandler(res);
     });
+  }
+
+  errorHandler(res: Response) {
+    if (res.status === 401) {
+      this.navCtrl.setRoot(LoginPage);
+    }
   }
 
   openRecognitionCreate() {
@@ -49,12 +56,16 @@ export class ActivityPage {
   loadAllRecognitions(reload?: boolean) {
     this.recData.load(reload).subscribe((recognitions: Recognition[]) => {
       this.recognitions = this.mapUsersToRecognitions(recognitions);
+    }, (res) => {
+      this.errorHandler(res);
     });
   }
 
   loadRecognitionsForCurrentUser() {
     this.recData.allForCurrentUser().subscribe((recognitions: Recognition[]) => {
       this.recognitions = this.mapUsersToRecognitions(recognitions);
+    }, (res) => {
+      this.errorHandler(res);
     });
   }
 

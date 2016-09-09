@@ -6,6 +6,7 @@ export class Recognition {
   private comment: string;
   private toUser: User;
   private fromUser: User;
+  private timestamp: string;
 
   constructor(data: any) {
     this.fromUserId = data.fromUserId;
@@ -14,6 +15,7 @@ export class Recognition {
     this.comment = data.comment;
     this.toUser = data.toUser || null;
     this.fromUser = data.fromUser || null;
+    this.timestamp = data.timestamp;
   }
 
   getComment(): string {
@@ -49,8 +51,7 @@ export class Recognition {
   }
 
   getCreatedAt(): Date {
-    // TODO return the actual recognition timestamp
-    return new Date();
+    return this.timestamp && new Date(this.timestamp) || new Date();
   }
 
   setFromUser(user: User) {
