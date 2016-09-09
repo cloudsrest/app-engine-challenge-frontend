@@ -64,8 +64,8 @@
   "scripts": {
     "test": "./node_modules/.bin/karma start --single-run --browsers PhantomJS",
     "test:dev": "./node_modules/.bin/karma start",
-    "prestart": "npm install",
-    "start": "ionic serve",
+    "prestart": "gulp build",
+    "start": "node server.js",
     "build-assets": "gulp build"
   },
   "engines": {
