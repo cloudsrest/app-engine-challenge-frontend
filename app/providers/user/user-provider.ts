@@ -3,12 +3,12 @@ import {Http, Headers, Response} from "@angular/http";
 import {User} from "../../models/user/user";
 import {Observable} from "rxjs";
 import 'rxjs/Rx';
-import {Storage, LocalStorage} from "ionic-angular";
+import {Storage, LocalStorage, App} from "ionic-angular";
 
 @Injectable()
 export class UserProvider {
 
-  private endpoint: string = '/api/users';
+  private endpoint: string = '/api/secure/users';
   private users: User[];
   private storage: Storage;
   private accessToken: string;
@@ -50,12 +50,14 @@ export class UserProvider {
   currentUser(): Observable<User> {
     return Observable.create(observer => {
       this.getAccessToken().then(() => {
-        this.http.get('/api/users/me', {headers: this.getHeaders()}).subscribe((res: Response) => {
+        this.http.get(`${this.endpoint}/me`, {headers: this.getHeaders()}).subscribe((res: Response) => {
           observer.next(new User(res.json()));
           observer.complete();
         }, (err) => {
           if (err.status === 401) {
-            // try to reauth with refresh token
+            // TODO try to reauth with refresh token?
+            observer.error(err);
+            observer.complete();
           } else {
             observer.error(err);
             observer.complete();
