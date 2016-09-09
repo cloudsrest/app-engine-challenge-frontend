@@ -4,7 +4,6 @@ import {User} from "../../models/user/user";
 import {Observable} from "rxjs";
 import 'rxjs/Rx';
 import {Storage, LocalStorage, App} from "ionic-angular";
-import {LoginPage} from "../../pages/login/login";
 
 @Injectable()
 export class UserProvider {
@@ -14,7 +13,7 @@ export class UserProvider {
   private storage: Storage;
   private accessToken: string;
 
-  constructor(private http:Http, private app: App) {
+  constructor(private http:Http) {
     this.storage = new Storage(LocalStorage);
     this.getAccessToken().then(() => {
       this.load();
